@@ -7,7 +7,11 @@ project(beginner_tutorials)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED)
+find_package(catkin REQUIRED COMPONENTS
+  roscpp
+  rospy
+  std_msgs
+)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -21,7 +25,8 @@ find_package(catkin REQUIRED)
 ################################################
 ## Declare ROS messages, services and actions ##
 ################################################
-
+##add_message_files(DIRECTORY msg FILES Num.msg)
+##add_service_files(DIRECTORY srv FILES AddTwoInts.srv)
 ## To declare and build messages, services or actions from within this
 ## package, follow these steps:
 ## * Let MSG_DEP_SET be the set of packages whose message types you use in
@@ -64,9 +69,9 @@ find_package(catkin REQUIRED)
 # )
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-#   std_msgs  # Or other packages containing msgs
+#generate_messages(
+#  DEPENDENCIES
+# std_msgs
 # )
 
 ################################################
@@ -101,7 +106,7 @@ find_package(catkin REQUIRED)
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES beginner_tutorials
-#  CATKIN_DEPENDS other_catkin_pkg
+#  CATKIN_DEPENDS roscpp rospy std_msgs
 #  DEPENDS system_lib
 )
 
@@ -113,7 +118,7 @@ catkin_package(
 ## Your package locations should be listed before other locations
 include_directories(
 # include
-# ${catkin_INCLUDE_DIRS}
+  ${catkin_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
@@ -193,3 +198,12 @@ include_directories(
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
+include_directories(include ${catkin_INCLUDE_DIRS})
+
+add_executable(talker src/Talker.cpp)
+target_link_libraries(talker ${catkin_LIBRARIES})
+##add_dependencies(talker beginner_tutorials_generate_messages_cpp)
+
+add_executable(listener src/Listener.cpp)
+target_link_libraries(listener ${catkin_LIBRARIES})
+##add_dependencies(listener beginner_tutorials_generate_messages_cpp)
