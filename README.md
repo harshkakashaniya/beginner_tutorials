@@ -47,6 +47,7 @@ Installation Instructions can be found [here](http://wiki.ros.org/kinetic/Instal
 ### Install catkin
 catkin is a Low-level build system macros and infrastructure for ROS.
 catkin is included by default when ROS is installed. But, it can also be installed with apt-get
+
 ```
 sudo apt-get install ros-kinetic-catkin
 ```
@@ -61,30 +62,30 @@ $ catkin_create_pkg beginner_tutorials
 ```
 ### Build the program
 ```
-cd ..
+cd ~/catkin_ws
 catkin_make
 ```
-This works as cmake and make in our ordinary process. After this we will see two more folders named build and devel.
+catkin_make works as cmake and make of our Cmake process. After running this we will see two more folders named build and devel
 
 ### Run the program
-```
-cd ~/catkin_ws
-```
+
 ## In Terminal 1
 ```
 roscore
 ```
 ## In Terminal 2
 ```
+cd ~/catkin_ws
 source devel.setup.bash
 rosrun beginner_tutorials talker
 ```
 ## In Terminal 3
 ```
+cd ~/catkin_ws
 source devel.setup.bash
 rosrun beginner_tutorials listener 
 ```
-## Terminaltion
+## Termination
 Press Ctrl+C in all the terminals to close the running program.
 ## OR
 
