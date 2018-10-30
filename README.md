@@ -57,7 +57,7 @@ Create a catkin workspace using following instructions:
 ```
 $ mkdir -p ~/catkin_ws/src
 $ cd ~/catkin_ws/src
-$ git clone https://github.com/harshkakashaniya/beginner_tutorials
+$ git clone --recursive https://github.com/harshkakashaniya/beginner_tutorials
 $ catkin_create_pkg beginner_tutorials
 ```
 ### Build the program
@@ -83,7 +83,7 @@ rosrun beginner_tutorials talker
 ```
 cd ~/catkin_ws
 source devel.setup.bash
-rosrun beginner_tutorials listener 
+rosrun beginner_tutorials listener
 ```
 ## Termination
 Press Ctrl+C in all the terminals to close the running program.
@@ -92,5 +92,5 @@ Press Ctrl+C in all the terminals to close the running program.
 In new terminal type
 ```
 rosnode kill talker
-rosnode kill listener 
+rosnode kill listener
 ```
