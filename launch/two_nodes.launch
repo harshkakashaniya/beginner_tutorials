@@ -1,0 +1,35 @@
+<launch>
+# to set logger level to DEBUG
+<env
+name="ROSCONSOLE_CONFIG_FILE"
+value="$(find beginner_tutorials)/debug.conf"
+/>
+
+# to initiate talker in new terminal with arguments
+<node
+pkg="beginner_tutorials"
+type="talker"
+name="talker"
+# condition for roslaunch to be ok.
+required ="true"
+launch-prefix="xterm -e"
+# argument passed in talker
+args = "$(arg Frequency)"
+/>
+
+# define arguments to be taken by launch file
+<arg
+name="Frequency"
+default="15"
+/>
+
+# to initiate Listener in new window
+<node
+pkg="beginner_tutorials"
+type="listener"
+name="listener"
+# to generate again when terminal closed
+respawn="true"
+launch-prefix="xterm -e"
+/>
+</launch>
