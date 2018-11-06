@@ -86,9 +86,13 @@ int main(int argc, char **argv) {
    * than we can send them, the number here specifies how many messages to
    * buffer up before throwing some away.
    */
-
-  ros::Publisher chatter_pub = nh.advertise<std_msgs::String>("chatter", 1000);
   int frequency= 10;
+  ros::Publisher chatter_pub = nh.advertise<std_msgs::String>("chatter", 1000);
+
+  if(argc == 2) {
+  frequency = atoi(argv[1]);
+  }
+
   ros::Rate loop_rate(frequency);  // looping with 10 Hz frequency
 
   ros::ServiceServer change_string = nh.advertiseService("change_string", chg_str);
@@ -102,9 +106,7 @@ int main(int argc, char **argv) {
   if (frequency<=0) {
     ROS_FATAL_STREAM_ONCE("Frequency given is negative.Change frequency to positive");
   }
-  if (Message=="") {
-    ROS_ERROR_STREAM("Empty Message,String Expected");
-  }
+
   while (ros::ok() && frequency>0) {
     /**
      * This is a message object. You stuff it with data, and then publish it.
@@ -113,12 +115,14 @@ int main(int argc, char **argv) {
      std::stringstream ss;
      ss << Message << count;
      msg.data = ss.str();
-     ROS_DEBUG_STREAM_THROTTLE(5,"Frequency set to 10 Hz");
+     ROS_DEBUG_STREAM_THROTTLE(1,"Frequency set to 10 Hz");
      ROS_INFO("%s", msg.data.c_str());
      if(count>100){
       ROS_WARN_STREAM_THROTTLE(2,"Number of message greater than 100");
      }
-
+     if (Message=="") {
+       ROS_ERROR_STREAM_THROTTLE(5,"Empty Message,String Expected");
+     }
     /**
      * The publish() function is how you send messages. The parameter
      * is the message object. The type of this object must agree with the type
