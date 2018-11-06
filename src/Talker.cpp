@@ -88,7 +88,8 @@ int main(int argc, char **argv) {
    */
 
   ros::Publisher chatter_pub = nh.advertise<std_msgs::String>("chatter", 1000);
-  ros::Rate loop_rate(10);  // looping with 10 Hz frequency
+  int frequency= 10;
+  ros::Rate loop_rate(frequency);  // looping with 10 Hz frequency
 
   ros::ServiceServer change_string = nh.advertiseService("change_string", chg_str);
   /**
@@ -97,7 +98,14 @@ int main(int argc, char **argv) {
    */
   int count = 0;  // initiate count to be zero
   // checking status of ROS this will be false is any error or Ctrl+C
-  while (ros::ok()) {
+
+  if (frequency<=0) {
+    ROS_FATAL_STREAM_ONCE("Frequency given is negative.Change frequency to positive");
+  }
+  if (Message=="") {
+    ROS_ERROR_STREAM("Empty Message,String Expected");
+  }
+  while (ros::ok() && frequency>0) {
     /**
      * This is a message object. You stuff it with data, and then publish it.
      */
@@ -105,7 +113,11 @@ int main(int argc, char **argv) {
      std::stringstream ss;
      ss << Message << count;
      msg.data = ss.str();
+     ROS_DEBUG_STREAM_THROTTLE(5,"Frequency set to 10 Hz");
      ROS_INFO("%s", msg.data.c_str());
+     if(count>100){
+      ROS_WARN_STREAM_THROTTLE(2,"Number of message greater than 100");
+     }
 
     /**
      * The publish() function is how you send messages. The parameter
@@ -119,7 +131,5 @@ int main(int argc, char **argv) {
      count++;  // increment of count
      loop_rate.sleep();  // to run loop till ROS is OK!!
   }
-
-
   return 0;
 }
