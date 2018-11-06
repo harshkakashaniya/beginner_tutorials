@@ -25,7 +25,7 @@
 /**
  *  @file    Talker.cpp
  *  @author  Harsh Kakashaniya
- *  @date    10/28/2018
+ *  @date    11/04/2018
  *  @version 1.1
  *
  *  @brief UMD ENPM 808X, ROS tutorials.
@@ -38,8 +38,15 @@
 #include <sstream>
 #include "ros/ros.h"
 #include "std_msgs/String.h"
+#include "beginner_tutorials/change_string.h"
 
+std::string Message="I am counting 10 numbers per second and reached ";
 
+bool chg_str(beginner_tutorials::change_string::Request  &req,
+beginner_tutorials::change_string::Response &res) {
+ Message = req.newString;
+ return true;
+ }
 /**
  * This tutorial demonstrates simple sending of messages over the ROS system.
  */
@@ -61,7 +68,7 @@ int main(int argc, char **argv) {
    * The first NodeHandle constructed will fully initialize this node, and the last
    * NodeHandle destructed will close down the node.
    */
-  ros::NodeHandle n;
+  ros::NodeHandle nh;
 
   /**
    * The advertise() function is how you tell ROS that you want to
@@ -79,10 +86,11 @@ int main(int argc, char **argv) {
    * than we can send them, the number here specifies how many messages to
    * buffer up before throwing some away.
    */
-  ros::Publisher chatter_pub = n.advertise<std_msgs::String>("chatter", 1000);
 
+  ros::Publisher chatter_pub = nh.advertise<std_msgs::String>("chatter", 1000);
   ros::Rate loop_rate(10);  // looping with 10 Hz frequency
 
+  ros::ServiceServer change_string = nh.advertiseService("change_string", chg_str);
   /**
    * A count of how many messages we have sent. This is used to create
    * a unique string for each message.
@@ -93,13 +101,11 @@ int main(int argc, char **argv) {
     /**
      * This is a message object. You stuff it with data, and then publish it.
      */
-    std_msgs::String msg;
-
-    std::stringstream ss;
-    ss << "I am counting 10 numbers per second and reached " << count;
-    msg.data = ss.str();
-
-    ROS_INFO("%s", msg.data.c_str());
+     std_msgs::String msg;
+     std::stringstream ss;
+     ss << Message << count;
+     msg.data = ss.str();
+     ROS_INFO("%s", msg.data.c_str());
 
     /**
      * The publish() function is how you send messages. The parameter
@@ -107,11 +113,11 @@ int main(int argc, char **argv) {
      * given as a template parameter to the advertise<>() call, as was done
      * in the constructor above.
      */
-    chatter_pub.publish(msg);  // Publishing Message with publish
+     chatter_pub.publish(msg);  // Publishing Message with publish
 
-    ros::spinOnce();  //  to output message
-    count++;  // increment of count
-    loop_rate.sleep();  // to run loop till ROS is OK!!
+     ros::spinOnce();  //  to output message
+     count++;  // increment of count
+     loop_rate.sleep();  // to run loop till ROS is OK!!
   }
 
 
