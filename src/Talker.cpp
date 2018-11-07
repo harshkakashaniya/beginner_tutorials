@@ -40,13 +40,22 @@
 #include "std_msgs/String.h"
 #include "beginner_tutorials/change_string.h"
 
-std::string Message="I am counting 10 numbers per second and reached ";
+// default string of message
+std::string Message("I am counting 10 numbers per second and reached ");
 
+/**
+ *   @brief changing string with the help of service
+ *
+ *
+ *   @param req
+ *   @param res
+ *   @return bool
+ */
 bool chg_str(beginner_tutorials::change_string::Request  &req,
 beginner_tutorials::change_string::Response &res) {
- Message = req.newString;
- return true;
- }
+    Message = req.newString;
+    return true;
+    }
 /**
  * This tutorial demonstrates simple sending of messages over the ROS system.
  */
@@ -70,6 +79,7 @@ int main(int argc, char **argv) {
    */
   ros::NodeHandle nh;
 
+  int frequency = 10;  // default value of frequency if not set by argument
   /**
    * The advertise() function is how you tell ROS that you want to
    * publish on a given topic name. This invokes a call to the ROS
@@ -86,28 +96,36 @@ int main(int argc, char **argv) {
    * than we can send them, the number here specifies how many messages to
    * buffer up before throwing some away.
    */
-  int frequency= 10;
+
+
   ros::Publisher chatter_pub = nh.advertise<std_msgs::String>("chatter", 1000);
 
-  if(argc == 2) {
-  frequency = atoi(argv[1]);
-  }
+  //  taking in argument and converting it from string to int
+  if (argc == 2) {
+    frequency = atoi(argv[1]);
+    }
 
   ros::Rate loop_rate(frequency);  // looping with 10 Hz frequency
 
-  ros::ServiceServer change_string = nh.advertiseService("change_string", chg_str);
+  /**
+   * Advertising service server so that when this node is functional service
+   * can be called and it can do required changes in the code.
+   */
+  ros::ServiceServer change_string = nh.advertiseService("change_string"
+, chg_str);
   /**
    * A count of how many messages we have sent. This is used to create
    * a unique string for each message.
    */
   int count = 0;  // initiate count to be zero
+  // checking if frequency is negative
+  if (frequency <= 0) {
+    ROS_FATAL_STREAM_ONCE("Frequency given is negative.Change"<<
+"frequency to positive");
+    }
+
   // checking status of ROS this will be false is any error or Ctrl+C
-
-  if (frequency<=0) {
-    ROS_FATAL_STREAM_ONCE("Frequency given is negative.Change frequency to positive");
-  }
-
-  while (ros::ok() && frequency>0) {
+  while (ros::ok() && frequency > 0) {
     /**
      * This is a message object. You stuff it with data, and then publish it.
      */
@@ -115,13 +133,18 @@ int main(int argc, char **argv) {
      std::stringstream ss;
      ss << Message << count;
      msg.data = ss.str();
-     ROS_DEBUG_STREAM_THROTTLE(1,"Frequency set to 10 Hz");
+     // To inform user about the frequency of debug message
+     ROS_DEBUG_STREAM_THROTTLE(1, "Frequency set to 10 Hz");
+     // Printing required message given by service or default
      ROS_INFO("%s", msg.data.c_str());
-     if(count>100){
-      ROS_WARN_STREAM_THROTTLE(2,"Number of message greater than 100");
-     }
-     if (Message=="") {
-       ROS_ERROR_STREAM_THROTTLE(5,"Empty Message,String Expected");
+     // To warn user that if he forgot to close the node it is eating memory.
+
+     if (count > 100) {
+       ROS_WARN_STREAM_THROTTLE(2, "Number of message greater than 100");
+      }
+     // If message empty means error of not giving desired input
+     if (Message == "") {
+       ROS_ERROR_STREAM_THROTTLE(5, "Empty Message,String Expected");
      }
     /**
      * The publish() function is how you send messages. The parameter
