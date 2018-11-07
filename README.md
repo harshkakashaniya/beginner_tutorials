@@ -67,11 +67,14 @@ catkin_make works as cmake and make of our Cmake process. After running this we 
 roscore
 ```
 ## In Terminal 2
+Here 20 is the required frequency it can be any positive value <frequrncy value>
+If no argument given it will take default frequency which is 10 Hz.
 ```
 cd ~/catkin_ws
 source devel/setup.bash
-rosrun beginner_tutorials talker
+rosrun beginner_tutorials talker 20
 ```
+
 ## This is output of Publisher
 ![](images/Talker.jpg)
 
@@ -83,6 +86,71 @@ rosrun beginner_tutorials listener
 ```
 ## This is output of Subscriber
 ![](images/Listner.jpg)
+
+## Logger Level
+
+## 1.Debug
+```
+[DEBUG] [1541559045.561792034]:Frequency set to 10 Hz
+```
+## 2.Info
+```
+[ INFO] [1541558611.011847575]: I am counting 10 numbers per second and reached 5
+```
+## 3.Warn
+```
+[ WARN] [1541558608.512518802]: Number of message greater than 100
+```
+## 4.Error
+```
+[ERROR] [1541559281.905413291]: Empty Message,String Expected
+```
+## 5. Fatal
+```
+[FATAL] [1541558543.617456555]: Frequency given is negative.Changefrequency to positive
+```
+
+## Launch File
+```
+cd ~/catkin_ws
+source devel/setup.bash
+roslaunch beginner_tutorials two_nodes.launch Frequency:=<Frequency value to be passed>
+```
+Note: Without argument it will give Error 
+
+## Service File
+This service is made to change string which is printed by talker. So make this service
+
+To check service names available
+```
+rosservice list
+```
+If everything is fine you will see 
+```
+/change_string 
+```
+as one of the service
+
+To run the service
+```
+cd ~/catkin_ws
+source devel/setup.bash
+rosservice call /change_string 'New message to type'
+```
+
+## RQT Console and Logger level
+To open logger
+```
+rqt_logger_level
+```
+To open RQT console
+```
+ rqt_console
+```
+Sample of Console and Logger level
+
+![](rqt_console/rqt_console.jpg)
+
 
 ## Termination
 Press Ctrl+C in all the terminals to close the running program.
