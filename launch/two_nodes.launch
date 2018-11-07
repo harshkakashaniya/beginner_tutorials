@@ -6,14 +6,14 @@ value="$(find beginner_tutorials)/debug.conf"
 />
 
 # to initiate talker in new terminal with arguments
+# condition for roslaunch to be ok.
+# argument passed in talker
 <node
 pkg="beginner_tutorials"
 type="talker"
 name="talker"
-# condition for roslaunch to be ok.
 required ="true"
 launch-prefix="xterm -e"
-# argument passed in talker
 args = "$(arg Frequency)"
 />
 
@@ -24,11 +24,11 @@ default="15"
 />
 
 # to initiate Listener in new window
+# to generate again when terminal closed
 <node
 pkg="beginner_tutorials"
 type="listener"
 name="listener"
-# to generate again when terminal closed
 respawn="true"
 launch-prefix="xterm -e"
 />
