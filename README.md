@@ -72,7 +72,7 @@ If no argument given it will take default frequency which is 10 Hz.
 ```
 cd ~/catkin_ws
 source devel/setup.bash
-rosrun beginner_tutorials talker 20
+rosrun beginner_tutorials talker 50
 ```
 
 ## This is output of Publisher
@@ -88,7 +88,7 @@ rosrun beginner_tutorials listener
 ![](images/Listner.jpg)
 
 ## Logger Level
-
+These are logs which will come in different situation of input.
 ## 1.Debug
 ```
 [DEBUG] [1541559045.561792034]:Frequency set to 10 Hz
@@ -98,14 +98,17 @@ rosrun beginner_tutorials listener
 [ INFO] [1541558611.011847575]: I am counting 10 numbers per second and reached 5
 ```
 ## 3.Warn
+When counter goes above 100 messages.
 ```
 [ WARN] [1541558608.512518802]: Number of message greater than 100
 ```
 ## 4.Error
+When service passes Empty string.
 ```
 [ERROR] [1541559281.905413291]: Empty Message,String Expected
 ```
 ## 5. Fatal
+When given frequency < 0 (negative frequency)
 ```
 [FATAL] [1541558543.617456555]: Frequency given is negative.Changefrequency to positive
 ```
@@ -114,23 +117,22 @@ rosrun beginner_tutorials listener
 ```
 cd ~/catkin_ws
 source devel/setup.bash
-roslaunch beginner_tutorials two_nodes.launch Frequency:=<Frequency value to be passed>
+roslaunch beginner_tutorials two_nodes.launch Frequency:=30
 ```
-Note: Without argument it will give Error 
+<Frequency value to be passed>=30 in this case we can change it.
+Note: Without argument it will give Error
 
 ## Service File
-This service is made to change string which is printed by talker. So make this service
+This service is made to change string which is printed by talker.
 
 To check service names available
 ```
 rosservice list
 ```
-If everything is fine you will see 
+If everything is fine you will see as one of the service as
 ```
-/change_string 
+/change_string
 ```
-as one of the service
-
 To run the service
 ```
 cd ~/catkin_ws
