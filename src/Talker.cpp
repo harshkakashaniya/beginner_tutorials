@@ -54,6 +54,7 @@ std::string Message("I am counting 10 numbers per second and reached ");
 bool chg_str(beginner_tutorials::change_string::Request  &req,
 beginner_tutorials::change_string::Response &res) {
     Message = req.newString;
+    res.responseString="String Updated";
     return true;
     }
 /**
