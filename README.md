@@ -4,15 +4,8 @@
 ## Overview
 
 A small project of ROS to understand basic concepts of nodes, topic etc. By taking an example of publisher (i.e in our case Talker) and Subscriber(i.e in our case Listener). This project teaches how to write code for Publisher and Subscriber. At the end we will also use rosrun command and make two nodes which will enable us to communicate.
-
-This will generates a output as follows
-
-## This is output of Publisher
-![](images/Talker.jpg)
-
-## This is output of Subscriber
-![](images/Listner.jpg)
-
+Later we learned about Log messages there different level. Also we learned to make service server and client. using this service we changes string of talker.
+We learned about concept of launch file and made one to automate our listener and talker.  
 
 ## License
 ```
@@ -57,7 +50,7 @@ Create a catkin workspace using following instructions:
 ```
 $ mkdir -p ~/catkin_ws/src
 $ cd ~/catkin_ws/src
-$ git clone --recursive https://github.com/harshkakashaniya/beginner_tutorials
+$ git clone --recursive https://github.com/harshkakashaniya/beginner_tutorials/ --branch Week10_HW
 $ catkin_create_pkg beginner_tutorials
 ```
 ### Build the program
@@ -76,17 +69,24 @@ roscore
 ## In Terminal 2
 ```
 cd ~/catkin_ws
-source devel.setup.bash
+source devel/setup.bash
 rosrun beginner_tutorials talker
 ```
+## This is output of Publisher
+![](images/Talker.jpg)
+
 ## In Terminal 3
 ```
 cd ~/catkin_ws
-source devel.setup.bash
+source devel/setup.bash
 rosrun beginner_tutorials listener
 ```
+## This is output of Subscriber
+![](images/Listner.jpg)
+
 ## Termination
 Press Ctrl+C in all the terminals to close the running program.
+
 ## OR
 
 In new terminal type
