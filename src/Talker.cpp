@@ -25,8 +25,8 @@
 /**
  *  @file    Talker.cpp
  *  @author  Harsh Kakashaniya
- *  @date    11/04/2018
- *  @version 1.1
+ *  @date    12/04/2018
+ *  @version 1.2
  *
  *  @brief UMD ENPM 808X, ROS tutorials.
  *
@@ -36,13 +36,14 @@
  *
  */
 #include <sstream>
+#include <iostream>
 #include "ros/ros.h"
 #include "std_msgs/String.h"
 #include "beginner_tutorials/change_string.h"
+#include <tf/transform_broadcaster.h>
 
 // default string of message
 std::string Message("I am counting 10 numbers per second and reached ");
-
 /**
  *   @brief changing string with the help of service
  *
@@ -106,8 +107,8 @@ int main(int argc, char **argv) {
     frequency = atoi(argv[1]);
     }
 
-  ros::Rate loop_rate(frequency);  // looping with 10 Hz frequency
 
+  ros::Rate loop_rate(frequency);  // looping with 10 Hz frequency
   /**
    * Advertising service server so that when this node is functional service
    * can be called and it can do required changes in the code.
@@ -124,12 +125,24 @@ int main(int argc, char **argv) {
     ROS_FATAL_STREAM_ONCE("Frequency given is negative.Change"<<
 "frequency to positive");
     }
-
+    static tf::TransformBroadcaster br;
+    tf::Transform transform;
+    tf::Quaternion q;
   // checking status of ROS this will be false is any error or Ctrl+C
   while (ros::ok() && frequency > 0) {
     /**
      * This is a message object. You stuff it with data, and then publish it.
      */
+     double X= 5*cos(ros::Time::now().toSec());
+     double Y= 5*sin(ros::Time::now().toSec());
+     int time=ros::Time::now().toSec();
+     int Z= (time%10)-5;
+     transform.setOrigin( tf::Vector3(X, Y, Z));
+     q.setRPY(0, 0, 1.0);
+     transform.setRotation(q);
+     br.sendTransform(tf::StampedTransform(transform, ros::Time::now(),
+                                          "world", "talk"));
+
      std_msgs::String msg;
      std::stringstream ss;
      ss << Message << count;
