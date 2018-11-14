@@ -156,13 +156,13 @@ Sample of Console and Logger level
 ## TF frames 
 We edited talker to broadcast transfer function. So first run the node
 ```
-cd catkin_ws/
+cd ~/catkin_ws
 source devel/setup.bash
 rosrun beginner_tutorials talker
 ```
 In other terminal
 ```
-cd catkin_ws/
+cd ~/catkin_ws
 source devel/setup.bash
 rosrun tf tf_echo /world /talk
 ```
@@ -196,14 +196,15 @@ will save the pdf at that terminal address of same output as above.
 ## Running rostest
 Level 2 integration test is written for checking service of String change and can be build and tested by following code. 
 ```
-cd catkin_ws/
+cd ~/catkin_ws
 catkin_make tests
 catkin_make test
 ```
 OR
 ```
-cd catkin_ws/
+cd ~/catkin_ws
 source devel/setup.bash
+catkin_make tests
 rostest beginner_tutorials test.launch
 ```
 Output
@@ -224,6 +225,8 @@ SUMMARY
 ```
 ## Recording bag files with the launch file,
 ```
+cd ~/catkin_ws
+source devel/setup.bash
 roslaunch beginner_tutorials two_nodes.launch Record:=true
 ```
 by this command we will have RecordTalker.bag file in result folder. One such sample file is kept in result/RosbagRecording.bag
@@ -235,7 +238,7 @@ Press Ctrl+C
 ## Inspecting the bag file
 to check what are the details of any particular bag file.
 ```
-cd catkin_ws/
+cd ~/catkin_ws
 rosbag info src/beginner_tutorials/results/RosbagRecording.bag
 
 ```
@@ -261,13 +264,13 @@ topics:      /chatter      156 msgs    : std_msgs/String
 
 ## Playing back the bag file with the Listener node demonstration.
 ```
-cd catkin_ws/
+cd ~/catkin_ws
 source devel/setup.bash
 rosrun beginner_tutorials listener
 ```
 In other terminal
 ```
-cd catkin_ws/
+cd ~/catkin_ws
 cd src/beginner_tutorials/
 rosbag play results/RosbagRecording.bag
 ```
