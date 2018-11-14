@@ -4,8 +4,8 @@
 ## Overview
 
 A small project of ROS to understand basic concepts of nodes, topic etc. By taking an example of publisher (i.e in our case Talker) and Subscriber(i.e in our case Listener). This project teaches how to write code for Publisher and Subscriber. At the end we will also use rosrun command and make two nodes which will enable us to communicate.
-Later we learned about Log messages there different level. Also we learned to make service server and client. using this service we changes string of talker.
-We learned about concept of launch file and made one to automate our listener and talker.  
+Later we learned about Log messages there different level. Also we learned to make service server and client. Using this service we changes string of talker. Also we learned about concept of launch file and made one to automate our listener and talker.
+Later we learned concept of Bag file for storing data which can be used as may time we require for virtual simulation of robot. Then we learned about the google tests to be used for testing nodes and services at the end we learned about the tf frames and its applications. So all this learning is done with examples inside the code. So every concept learned has an application in this project.
 
 ## License
 ```
