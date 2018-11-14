@@ -50,7 +50,7 @@ Create a catkin workspace using following instructions:
 ```
 $ mkdir -p ~/catkin_ws/src
 $ cd ~/catkin_ws/src
-$ git clone --recursive https://github.com/harshkakashaniya/beginner_tutorials/ --branch Week10_HW
+$ git clone --recursive https://github.com/harshkakashaniya/beginner_tutorials/ --branch Week11_HW
 $ catkin_create_pkg beginner_tutorials
 ```
 ### Build the program
@@ -153,6 +153,133 @@ Sample of Console and Logger level
 
 ![](rqt_console/rqt_console.jpg)
 
+## TF frames 
+We edited talker to broadcast transfer function. So first run the node
+```
+cd catkin_ws/
+source devel/setup.bash
+rosrun beginner_tutorials talker
+rosrun tf tf_echo /world /talk
+```
+We can see the significance of the values printed by tf_echo by following code.
+```
+rviz
+```
+on left select frame fixed to be world
+and at bottom
+```
+click ADD
+Select TF from the list
+```
+Following will be the output
+![](images/Rviz.jpg)
+
+tf_echo will show us the output of moving frame.
+Output can be checked in rqt_tf_tree to see the /world and /talk frame  
+```
+rosrun rqt_tf_tree rqt_tf_tree
+```
+Such output is desirable.
+
+![](images/tf_frame.jpg)
+
+```
+rosrun tf view_frames
+```
+will save the pdf at that terminal address of same output as above.
+
+## Running rostest
+Level 2 integration test is written for checking service of String change and can be build and tested by following code. 
+```
+cd catkin_ws/
+catkin_make tests
+catkin_make test
+```
+OR
+```
+cd catkin_ws/
+source devel/setup.bash
+rostest beginner_tutorials test.launch
+```
+Output
+```
+[ROSUNIT] Outputting test results to /home/hbk/.ros/test_results/beginner_tutorials/rostest-test_test.xml
+[Testcase: testtalkTest] ... ok
+
+[ROSTEST]-----------------------------------------------------------------------
+
+[beginner_tutorials.rosunit-talkTest/testInitOfService][passed]
+
+SUMMARY
+ * RESULT: SUCCESS
+ * TESTS: 1
+ * ERRORS: 0
+ * FAILURES: 0
+
+```
+## Recording bag files with the launch file,
+```
+roslaunch beginner_tutorials two_nodes.launch Record:=true
+```
+by this command we will have RecordTalker.bag file in result folder. One such sample file is kept in result/RosbagRecording.bag
+## Disable bag file recording,
+To Disable bag file recording, come to terminal
+```
+Press Ctrl+C 
+```
+## Inspecting the bag file
+to check what are the details of any particular bag file.
+```
+cd catkin_ws/
+rosbag info src/beginner_tutorials/results/RosbagRecording.bag
+
+```
+We will see similar ouput
+```
+path:        src/beginner_tutorials/results/RosbagRecording.bag
+version:     2.0
+duration:    15.9s
+start:       Nov 13 2018 18:20:40.28 (1542151240.28)
+end:         Nov 13 2018 18:20:56.18 (1542151256.18)
+size:        135.6 KB
+messages:    641
+compression: none [1/1 chunks]
+types:       rosgraph_msgs/Log  [acffd30cd6b6de30f120938c17c593fb]
+             std_msgs/String    [992ce8a1687cec8c8bd883ec73ca41d1]
+             tf2_msgs/TFMessage [94810edda583a504dfda3829e70d7eec]
+topics:      /chatter      156 msgs    : std_msgs/String   
+             /rosout       166 msgs    : rosgraph_msgs/Log  (2 connections)
+             /rosout_agg   162 msgs    : rosgraph_msgs/Log 
+             /tf           157 msgs    : tf2_msgs/TFMessage
+```
+
+
+## Playing back the bag file with the Listener node demonstration.
+```
+cd catkin_ws/
+source devel/setup.bash
+rosrun beginner_tutorials listener
+cd src/beginner_tutorials/
+rosbag play results/RosbagRecording.bag
+```
+Similar is the output of Rosbag when the above code is run.
+```
+[RUNNING]  Bag Time: 1542151242.383368   Duration: 2.108356 / 15.907971         [RUNNING]  Bag Time: 1542151242.383678   Duration: 2.108666 / 15.907971         [RUNNING]  Bag Time: 1542151242.483401   Duration: 2.208389 / 15.907971         [RUNNING]  Bag Time: 1542151242.483769   Duration: 2.208757 / 15.907971         [RUNNING]  Bag Time: 1542151242.583377   Duration: 2.308366 / 15.907971         [RUNNING]  Bag Time: 1542151242.583748   Duration: 2.308736 / 15.907971         [RUNNING]  Bag Time: 1542151242.683448   Duration: 2.408437 / 15.907971         [RUNNING]  Bag Time: 1542151242.683716   Duration: 2.408705 / 15.907971         [RUNNING]  Bag Time: 1542151242.783114   Duration: 2.508102 / 15.907971         [RUNNING]  Bag Time: 1542151242.883425   Duration: 2.608414 / 15.907971         [RUNNING]  Bag Time: 1542151242.883842   Duration: 2.608830 / 15.907971         [RUNNING]  Bag Time: 1542151242.983378   Duration: 2.708366 / 15.907971         [RUNNING]  Bag Time: 1542151242.983547   Duration: 2.708535 / 15.907971         [RUNNING]  Bag Time: 1542151242.983651   Duration: 2.708640 / 15.907971         [RUNNING]  Bag Time: 1542151243.083310   Duration: 2.808298 / 15.907971         [RUNNING]  Bag Time: 1542151243.083660   Duration: 2.808648 / 15.907971         [RUNNING]  Bag Time: 1542151243.083922   Duration: 2.808910 / 15.907971         [RUNNING]  Bag Time: 1542151243.183209   Duration: 2.908197 / 15.907971         [RUNNING]  Bag Time: 1542151243.183272   Duration: 2.908261 / 15.907971         [RUNNING]  Bag Time: 1542151243.183444   Duration: 2.908432 / 15.907971         [RUNNING]  Bag Time: 1542151243.283300   Duration: 3.008288 / 15.907971         [RUNNING]  Bag Time: 1542151243.283487   Duration: 3.008475 / 15.907971 
+```
+Output of listener as bag file is working.
+```
+[ INFO] [1542162511.817888162]: I heard: [I am counting 10 numbers per second and reached 72]
+[ INFO] [1542162511.917725885]: I heard: [I am counting 10 numbers per second and reached 73]
+[ INFO] [1542162512.017774180]: I heard: [I am counting 10 numbers per second and reached 74]
+[ INFO] [1542162512.117828360]: I heard: [I am counting 10 numbers per second and reached 75]
+[ INFO] [1542162512.217753275]: I heard: [I am counting 10 numbers per second and reached 76]
+[ INFO] [1542162512.317813769]: I heard: [I am counting 10 numbers per second and reached 77]
+[ INFO] [1542162512.418080831]: I heard: [I am counting 10 numbers per second and reached 78]
+[ INFO] [1542162512.517941984]: I heard: [I am counting 10 numbers per second and reached 79]
+[ INFO] [1542162512.617787305]: I heard: [I am counting 10 numbers per second and reached 80]
+[ INFO] [1542162512.717960719]: I heard: [I am counting 10 numbers per second and reached 81]
+[ INFO] [1542162512.817748357]: I heard: [I am counting 10 numbers per second and reached 82]
+```
 
 ## Termination
 Press Ctrl+C in all the terminals to close the running program.
