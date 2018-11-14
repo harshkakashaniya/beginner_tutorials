@@ -46,8 +46,11 @@
   // service file
   #include "beginner_tutorials/change_string.h"
 
-// default string of message
-std::string Message("I am counting 10 numbers per second and reached ");
+// default string of message in structure
+struct str_msg {
+  std::string message;
+};
+str_msg MessageObj;
 /**
  *   @brief changing string with the help of service
  *
@@ -58,7 +61,7 @@ std::string Message("I am counting 10 numbers per second and reached ");
  */
 bool chg_str(beginner_tutorials::change_string::Request  &req,
 beginner_tutorials::change_string::Response &res) {
-    Message = req.newString;
+    MessageObj.message = req.newString;
     res.responseString = "String Updated";
     return true;
     }
@@ -84,7 +87,7 @@ int main(int argc, char **argv) {
    * NodeHandle destructed will close down the node.
    */
   ros::NodeHandle nh;
-
+  MessageObj.message = "I am counting 10 numbers per second and reached ";
   int frequency = 10;  // default value of frequency if not set by argument
   /**
    * The advertise() function is how you tell ROS that you want to
@@ -147,7 +150,7 @@ int main(int argc, char **argv) {
                                           "world", "talk"));
      std_msgs::String msg;
      std::stringstream ss;
-     ss << Message << count;
+     ss << MessageObj.message << count;
      msg.data = ss.str();
      // To inform user about the frequency of debug message
      ROS_DEBUG_STREAM_THROTTLE(1, "Frequency set to 10 Hz");
@@ -159,7 +162,7 @@ int main(int argc, char **argv) {
        ROS_WARN_STREAM_THROTTLE(2, "Number of message greater than 100");
       }
      // If message empty means error of not giving desired input
-     if (Message == "") {
+     if (MessageObj.message == "") {
        ROS_ERROR_STREAM_THROTTLE(5, "Empty Message,String Expected");
      }
     /**
