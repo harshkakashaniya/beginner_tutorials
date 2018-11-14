@@ -35,15 +35,16 @@
  *  This file is used to initiate gtest.
  *
  */
+  // Bring in gtest
+  #include <gtest/gtest.h>
+  // This is usefull in test for service
+  #include <ros/service_client.h>
+  // Call ROS library for using its functions
+  #include "ros/ros.h"
 
- // Call ROS library for using its functions
- #include "ros/ros.h"
- #include <ros/service_client.h>
- // Bring in gtest
-#include <gtest/gtest.h>
 
- int main(int argc, char **argv) {
-  ros::init(argc, argv, "talkerTest");
-  testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
-}
+  int main(int argc, char **argv) {
+    ros::init(argc, argv, "talkerTest");  // Initialization of ROS
+    testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();  // run all available tests from talkTest.cpp
+  }

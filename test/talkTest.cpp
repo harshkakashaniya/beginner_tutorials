@@ -35,13 +35,12 @@
  *  This file is used to include all test services.
  *
  */
-
- // Call ROS library for using its functions
-#include "ros/ros.h"
-// Bring in gtest
-#include <gtest/gtest.h>
-
-#include "beginner_tutorials/change_string.h"
+  // Bring in gtest
+  #include <gtest/gtest.h>
+  // Call ROS library for using its functions
+  #include "ros/ros.h"
+  // service file added to test
+  #include "beginner_tutorials/change_string.h"
 
 /**
  * @brief Testing is service working
@@ -52,9 +51,9 @@
 
 TEST(TalkerService, testInitOfService) {
   ros::NodeHandle nh;
-  ros::ServiceClient client =
+  ros::ServiceClient TalkerService =
       nh.serviceClient<beginner_tutorials::change_string>("change_string");
   // Check if the client exists
-  bool ServiceStatus(client.waitForExistence(ros::Duration(3.0)));
+  bool ServiceStatus(TalkerService.waitForExistence(ros::Duration(3.0)));
   EXPECT_TRUE(ServiceStatus);
 }

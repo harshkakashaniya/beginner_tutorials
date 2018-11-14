@@ -11,6 +11,7 @@ name="Frequency"
 default="15"
 />
 
+# Argument for recording initially set to false 
 <arg
     name="Record"
     default = "false"
@@ -37,7 +38,7 @@ name="listener"
 respawn="true"
 launch-prefix="xterm -e"
 />
-
+# node for recording the ROS bag with argument
 <node
     pkg = "rosbag"
     name = "record"
