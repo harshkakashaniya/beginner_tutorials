@@ -159,6 +159,11 @@ We edited talker to broadcast transfer function. So first run the node
 cd catkin_ws/
 source devel/setup.bash
 rosrun beginner_tutorials talker
+```
+In other terminal
+```
+cd catkin_ws/
+source devel/setup.bash
 rosrun tf tf_echo /world /talk
 ```
 We can see the significance of the values printed by tf_echo by following code.
@@ -259,6 +264,10 @@ topics:      /chatter      156 msgs    : std_msgs/String
 cd catkin_ws/
 source devel/setup.bash
 rosrun beginner_tutorials listener
+```
+In other terminal
+```
+cd catkin_ws/
 cd src/beginner_tutorials/
 rosbag play results/RosbagRecording.bag
 ```
