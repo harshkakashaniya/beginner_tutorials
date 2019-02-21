@@ -5,6 +5,18 @@ name="ROSCONSOLE_CONFIG_FILE"
 value="$(find beginner_tutorials)/debug.conf"
 />
 
+# define arguments to be taken by launch file
+<arg
+name="Frequency"
+default="15"
+/>
+
+# Argument for recording initially set to false 
+<arg
+    name="Record"
+    default = "false"
+/>
+
 # to initiate talker in new terminal with arguments
 # condition for roslaunch to be ok.
 # argument passed in talker
@@ -17,12 +29,6 @@ launch-prefix="xterm -e"
 args = "$(arg Frequency)"
 />
 
-# define arguments to be taken by launch file
-<arg
-name="Frequency"
-default="15"
-/>
-
 # to initiate Listener in new window
 # to generate again when terminal closed
 <node
@@ -32,4 +38,14 @@ name="listener"
 respawn="true"
 launch-prefix="xterm -e"
 />
+# node for recording the ROS bag with argument
+<node
+    pkg = "rosbag"
+    name = "record"
+    type = "record"
+    args = "-a -O $(find beginner_tutorials)/results/RecordTalker.bag"
+    if = "$(arg Record)"
+/>
+
+
 </launch>

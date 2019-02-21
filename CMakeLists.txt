@@ -13,6 +13,7 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   gencpp
   message_generation
+  tf
 )
 
 ## System dependencies are found with CMake's conventions
@@ -115,6 +116,25 @@ catkin_package(
 ## Build ##
 ###########
 
+if(CATKIN_ENABLE_TESTING)
+  find_package(rostest REQUIRED)
+  add_rostest_gtest(
+  talkTest
+  test/test.launch
+  test/main.cpp
+  test/talkTest.cpp
+  )
+  target_link_libraries(
+  talkTest
+  ${catkin_LIBRARIES}
+  )
+  add_dependencies(
+  talkTest
+  talker
+  beginner_tutorials_generate_messages_cpp
+  ${catkin_EXPORTED_TARGETS}
+  )
+endif()
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
@@ -204,8 +224,10 @@ include_directories(include ${catkin_INCLUDE_DIRS})
 
 add_executable(talker src/Talker.cpp)
 target_link_libraries(talker ${catkin_LIBRARIES})
-##add_dependencies(talker beginner_tutorials_generate_messages_cpp)
+add_dependencies(talker beginner_tutorials_generate_messages_cpp)
 
 add_executable(listener src/Listener.cpp)
 target_link_libraries(listener ${catkin_LIBRARIES})
-##add_dependencies(listener beginner_tutorials_generate_messages_cpp)
+add_dependencies(listener beginner_tutorials_generate_messages_cpp)
+
+##catkin_add_gtest(talkTest test/talkTest.cpp)
